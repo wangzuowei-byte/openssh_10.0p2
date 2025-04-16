@@ -48,6 +48,10 @@ function x86_build()
       # source env
    source ${TOOLCHAIN_PATH}/setup.sh
 
+   # make install
+   rm -rf ${PRJ_INSTALL_PATH}
+   mkdir -p ${PRJ_INSTALL_PATH}
+
    mkdir -p ${PRJ_BUILD_PATH}
    rm -rf ${PRJ_BUILD_PATH}/*
    cp -a ${TAR_BUILD_PATH}/${PTHREAD_NAME}/* ${PRJ_BUILD_PATH}/
@@ -77,6 +81,7 @@ function x86_build()
    --sysconfdir=/etc/ssh              \
    --localstatedir=/var               \
    --with-privsep-path=/var/empty     \
+   --with-pam                      \
    ac_cv_func_setpgrp_void=yes        \
    ac_cv_func_getpgrp_void=yes        \
    ac_cv_func_getaddrinfo=yes         \
@@ -86,12 +91,9 @@ function x86_build()
    --prefix=/usr   
 
    # make
-   make -j16
+   make INSTALL_SSH_KEYGEN=no -j16
 
-   # make install
-   rm -rf ${PRJ_INSTALL_PATH}
-   mkdir ${PRJ_INSTALL_PATH}
-   make install
+   make DESTDIR=${PRJ_INSTALL_PATH} install
 
    return 0
 }
@@ -117,6 +119,10 @@ function aarch64_linux_build()
    # source env
    source ${TOOLCHAIN_PATH}/setup.sh
 
+   # make install
+   rm -rf ${PRJ_INSTALL_PATH}
+   mkdir -p ${PRJ_INSTALL_PATH}
+
    mkdir -p ${PRJ_BUILD_PATH}
    rm -rf ${PRJ_BUILD_PATH}/*
    cp -a ${TAR_BUILD_PATH}/${PTHREAD_NAME}/* ${PRJ_BUILD_PATH}/
@@ -129,7 +135,7 @@ function aarch64_linux_build()
    cd build
 
    ../configure                       \
-   --host=aarch64-bst-linux           \
+   --host=x86_64-linux-gnu            \
    --with-entropy-source=/dev/urandom \
    --without-openssl-header-check     \
    --disable-strip                    \
@@ -158,9 +164,7 @@ function aarch64_linux_build()
    # make
    make INSTALL_SSH_KEYGEN=no -j16
 
-   # make install
-   rm -rf ${PRJ_INSTALL_PATH}
-   mkdir ${PRJ_INSTALL_PATH}
+
    make DESTDIR=${PRJ_INSTALL_PATH} install
 
 
@@ -190,6 +194,11 @@ function arm32_linux_build()
    # source env
    source ${TOOLCHAIN_PATH}/setup.sh
 
+   # make install
+   rm -rf ${PRJ_INSTALL_PATH}
+   mkdir -p ${PRJ_INSTALL_PATH}
+
+   mkdir -p ${PRJ_BUILD_PATH}
    rm -rf ${PRJ_BUILD_PATH}/*
    cp -a ${TAR_BUILD_PATH}/${PTHREAD_NAME}/* ${PRJ_BUILD_PATH}/
 
@@ -228,12 +237,9 @@ function arm32_linux_build()
 
 
    # make
-   make -j16
+   make INSTALL_SSH_KEYGEN=no -j16
 
-   # make install
-   #rm -rf ${PRJ_INSTALL_PATH}
-   #mkdir ${PRJ_INSTALL_PATH}
-   #make install
+   make DESTDIR=${PRJ_INSTALL_PATH} install
 
 
    return 0
@@ -261,6 +267,10 @@ function aarch64_qnx710_build()
    # source env
    source ${TOOLCHAIN_PATH}/setup.sh
 
+   # make install
+   rm -rf ${PRJ_INSTALL_PATH}
+   mkdir ${PRJ_INSTALL_PATH}
+
    mkdir -p ${PRJ_BUILD_PATH}
    rm -rf ${PRJ_BUILD_PATH}/*
    cp -a ${TAR_BUILD_PATH}/${PTHREAD_NAME}/* ${PRJ_BUILD_PATH}/
@@ -284,9 +294,7 @@ function aarch64_qnx710_build()
    # make
    make -j16
 
-   # make install
-   rm -rf ${PRJ_INSTALL_PATH}
-   mkdir ${PRJ_INSTALL_PATH}
+
    make install
    return 0
 }
