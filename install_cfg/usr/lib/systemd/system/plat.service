@@ -1,0 +1,15 @@
+[Unit]
+Description=Platfs Startup Service
+DefaultDependencies=no
+Before=sysinit.target
+Wants=sysinit.target
+
+[Service]
+ExecStart=/bin/true
+ExecStartPost=/bin/bash -c "/mnt/platfs/JICA/startup.sh &"
+StandardOutput=journal+console
+StandardError=journal+console
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target

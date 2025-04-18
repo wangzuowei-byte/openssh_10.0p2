@@ -1,0 +1,12 @@
+[Unit]
+Description=Wait for /mnt/platfs to be mounted
+DefaultDependencies=no
+After=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/sh -c 'until mountpoint -q /mnt/platfs; do sleep 0.1; done'
+
+[Install]
+WantedBy=multi-user.target
